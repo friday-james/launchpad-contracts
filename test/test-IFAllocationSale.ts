@@ -858,10 +858,17 @@ export default describe('IF Allocation Sale', function () {
   it('can set cliff vesting', async function () {
     // amount to pay
     const paymentAmount = 333330
+    const withdrawDelay = 10000
 
     const cliffInterval = Math.floor(vestingEndTime / 3)
-    const cliffPeriod = [endTime , endTime + cliffInterval * 1, endTime + cliffInterval * 2, endTime + cliffInterval * 3]
+    const cliffPeriod = [
+      endTime + withdrawDelay + 1,
+      endTime + withdrawDelay + cliffInterval * 1,
+      endTime + withdrawDelay + cliffInterval * 2,
+      endTime + withdrawDelay + cliffInterval * 3
+    ]
     const cliffPct = [10, 20, 30, 40]
+    await IFAllocationSale.connect(owner).setWithdrawDelay(withdrawDelay)
     await IFAllocationSale.connect(owner).setCliffPeriod(cliffPeriod, cliffPct)
 
     // fast forward from current time to start time
@@ -874,7 +881,7 @@ export default describe('IF Allocation Sale', function () {
     )
     await IFAllocationSale.connect(buyer).purchase(paymentAmount)
 
-    mineTimeDelta(endTime - (await getBlockTime()))
+    mineTimeDelta(endTime + withdrawDelay - (await getBlockTime()) + 1)
 
     // test withdraw
     await IFAllocationSale.connect(buyer).withdraw()
@@ -882,7 +889,7 @@ export default describe('IF Allocation Sale', function () {
 
     // just before the second cliff time
     mineNext()
-    mineTimeDelta((endTime + cliffInterval * 1) - (await getBlockTime()) - 2)
+    mineTimeDelta((endTime + withdrawDelay + cliffInterval * 1) - (await getBlockTime()) - 2)
     await expect(IFAllocationSale.connect(buyer).withdraw()).to.be.reverted
 
     mineNext()
