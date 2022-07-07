@@ -23,7 +23,7 @@ jobs:
       with:
         node-version: 16
         sarif: results.sarif
-        target: "../../contracts/"
+        target: "./contracts/"
         slither-config: ".github/workflows/slither.config.json"
 
     - name: Upload SARIF file
