@@ -1,7 +1,8 @@
 {
   "name": "impossible-launchpad-staking",
   "scripts": {
-    "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol"
+    "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol",
+    "postinstall": "husky install"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.6",
@@ -27,7 +28,7 @@
     "hardhat": "^2.9.9",
     "hardhat-gas-reporter": "^1.0.8",
     "hardhat-tracer": "^1.1.0-rc.6",
-    "husky": "^4.3.5",
+    "husky": "^8.0.1",
     "lodash": "^4.17.21",
     "papaparse": "^5.3.1",
     "prettier": "^2.5.1",
