@@ -1,0 +1,6 @@
+{
+    "exclude_low": true,
+    "exclude_medium": true,
+    "exclude_high": false,
+    "target": "/contracts"
+}
